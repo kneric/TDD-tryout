@@ -1,16 +1,44 @@
+require('dotenv').config();
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../app');
+// const app = require('../app');
+const mongoose = require('mongoose');
 chai.should();
 chai.use(chaiHttp);
+dbURI = process.env.DB_test
 
-describe('create article', function () {
+describe('post /article', function () {
+
+  after(function (done){
+    mongoose.connect(`${dbURI}`, {useNewUrlParser: true})
+    .then(()=> {
+      return mongoose.connection.db.dropCollection('articles')
+      .then(()=> {
+        done()
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  })
+
   it('should add new article', function (done){
-    chai.request(app)
-    .post('/')
+    chai.request('http://localhost:3000')
+    .post('/article')
+    .send(
+      {
+        title: 'my article',
+        content: 'hellooooooo woooorlllld!!!!',
+        thumbnail: 'https://getuikit.com/v2/docs/images/placeholder_600x400.svg',
+      }
+    )
     .end(function (err, response) {
-      response.status.should.equal(200);
+      console.log(response.body);
+      response.status.should.equal(201);
       response.body.should.be.an('object');
+      response.body.should.have.property('_id');
+      response.body.should.have.property('title');
+      response.body.should.have.property('content');
       done();
     })
   })
