@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {createArticle} = require('../controllers/articleC');
+const {createArticle, allArticle} = require('../controllers/articleC');
 
 router
   .post('/', createArticle)
+  .get('/', allArticle)
 
 module.exports = router

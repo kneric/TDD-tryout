@@ -7,38 +7,14 @@ chai.should();
 chai.use(chaiHttp);
 dbURI = process.env.DB_test
 
-describe('post /article', function () {
+describe('get /article', function () {
 
-  after(function (done){
-    mongoose.connect(`${dbURI}`, {useNewUrlParser: true})
-    .then(()=> {
-      return mongoose.connection.db.dropCollection('articles')
-      .then(()=> {
-        done()
-      })
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  })
-
-  it('should add new article', function (done){
+  it('should list all articles', function (done){
     chai.request('http://localhost:3000')
-    .post('/article')
-    .send(
-      {
-        title: 'my article',
-        content: 'hellooooooo woooorlllld!!!!',
-        thumbnail: 'https://getuikit.com/v2/docs/images/placeholder_600x400.svg',
-      }
-    )
+    .get('/article')
     .end(function (err, response) {
-      console.log(response.body);
-      response.status.should.equal(201);
-      response.body.should.be.an('object');
-      response.body.should.have.property('_id');
-      response.body.should.have.property('title');
-      response.body.should.have.property('content');
+      response.status.should.equal(200);
+      response.body.should.be.an('array');
       done();
     })
   })
