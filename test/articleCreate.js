@@ -42,6 +42,17 @@ describe('post /article', function () {
       done();
     })
   })
+
+  it('should return error', function (done){
+    chai.request('http://localhost:3000')
+    .post('/article')
+    .send()
+    .end(function (err, response) {
+      response.status.should.equal(400);
+      response.body.should.be.an('object');
+      done();
+    })
+  })
 })
 
 
