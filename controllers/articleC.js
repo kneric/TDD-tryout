@@ -27,6 +27,16 @@ const allArticle = (req, res) => {
   })
 }
 
+const updateArticle = (req, res) => {
+  Article.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
+  .then( article => {
+    res.status(201).json(article)
+  })
+  .catch( err => {
+    res.status(400).json(err)
+  })
+}
+
 module.exports = {
   createArticle,
   allArticle
