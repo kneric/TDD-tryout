@@ -22,7 +22,7 @@ describe('post /article', function () {
     })
   })
 
-  it('should return error', function (done){
+  it('should add new article', function (done){
     chai.request('http://localhost:3000')
     .post('/article')
     .send(
@@ -33,22 +33,12 @@ describe('post /article', function () {
       }
     )
     .end(function (err, response) {
+      console.log(response.body);
       response.status.should.equal(201);
       response.body.should.be.an('object');
       response.body.should.have.property('_id');
       response.body.should.have.property('title');
       response.body.should.have.property('content');
-      done();
-    })
-  })
-
-  it('should add new article', function (done){
-    chai.request('http://localhost:3000')
-    .post('/article')
-    .send()
-    .end(function (err, response) {
-      response.status.should.equal(400);
-      response.body.should.be.an('object');
       done();
     })
   })
