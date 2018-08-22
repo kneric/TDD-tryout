@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 chai.should();
 chai.use(chaiHttp);
 dbURI = process.env.DB_test
+// articleId =
 
 describe('post /article', function () {
 
@@ -55,4 +56,54 @@ describe('post /article', function () {
   })
 })
 
+describe('get /article', function () {
 
+  it('should list all articles', function (done){
+    chai.request('http://localhost:3000')
+    .get('/article')
+    .end(function (err, response) {
+      response.status.should.equal(200);
+      response.body.should.be.an('array');
+      done();
+    })
+  })
+})
+
+describe('put /article/:id', function () {
+
+  it('should update articles', function (done){
+    chai.request('http://localhost:3000')
+    .put('/article' + articleId)
+    .send(
+      {
+        title: 'my article2',
+        content: 'hellooooooo woooorlllld!!!!',
+        thumbnail: 'https://getuikit.com/v2/docs/images/placeholder_600x400.svg',
+      }
+    )
+    .end(function (err, response) {
+      response.status.should.equal(200);
+      response.body.should.be.an('object');
+      response.body.should.have.property('_id');
+      response.body.should.have.property('title');
+      response.body.should.have.property('content');
+      done();
+    })
+  })
+})
+
+describe('delete /article/:id', function () {
+
+  it('should delete articles', function (done){
+    chai.request('http://localhost:3000')
+    .delete('/article' + articleId)
+    .end(function (err, response) {
+      response.status.should.equal(200);
+      response.body.should.be.an('object');
+      response.body.should.have.property('_id');
+      response.body.should.have.property('title');
+      response.body.should.have.property('content');
+      done();
+    })
+  })
+})

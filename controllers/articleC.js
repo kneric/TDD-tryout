@@ -27,10 +27,34 @@ const allArticle = (req, res) => {
   })
 }
 
+const userArticle = (req, res) => {
+  Article.find({author: req.user._id})
+  .then(articles => {
+    if (articles){
+      res.status(200).json(articles)
+    } else {
+      res.status(404).json('user not found')  
+    }
+  })
+  .catch (err => {
+    res.status(400).json(err)
+  })
+}
+
 const updateArticle = (req, res) => {
   Article.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
   .then( article => {
-    res.status(201).json(article)
+    res.status(200).json(article)
+  })
+  .catch( err => {
+    res.status(400).json(err)
+  })
+}
+
+const deleteArticle = (req, res) => {
+  Article.findByIdAndRemove(req.params.id)
+  .then( article => {
+    res.status(200).json(article)
   })
   .catch( err => {
     res.status(400).json(err)
@@ -39,5 +63,8 @@ const updateArticle = (req, res) => {
 
 module.exports = {
   createArticle,
-  allArticle
+  allArticle,
+  userArticle,
+  updateArticle,
+  deleteArticle
 };
