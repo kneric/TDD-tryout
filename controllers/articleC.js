@@ -2,6 +2,7 @@ const Article = require('../models/article');
 
 const createArticle = (req, res) => {
   const {title, content, thumbnail, author} = req.body;
+  // let author = req.user
 
   Article.create({
     title,
@@ -19,6 +20,7 @@ const createArticle = (req, res) => {
 
 const allArticle = (req, res) => {
   Article.find()
+  .populate('author')
   .then(articles => {
     res.status(200).json(articles)
   })
@@ -29,6 +31,7 @@ const allArticle = (req, res) => {
 
 const userArticle = (req, res) => {
   Article.find({author: req.user._id})
+  .populate('author')
   .then(articles => {
     if (articles){
       res.status(200).json(articles)
@@ -43,6 +46,7 @@ const userArticle = (req, res) => {
 
 const articleById = (req, res) => {
   Article.findById(req.params.id)
+  .populate('author')
   .then(article => {
     if (article){
       res.status(200).json(article)
