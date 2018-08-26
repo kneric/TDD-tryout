@@ -70,12 +70,28 @@ describe('CRUD article', function() {
       })
     })
   })
+
+  describe('get /article/:id', function () {
+  
+    it('should list article with the requested id', function (done){
+      chai.request('http://localhost:3000')
+      .get('/article/' + articleId)
+      .end(function (err, response) {
+        response.status.should.equal(200);
+        response.body.should.be.an('object');
+        response.body.should.have.property('_id');
+        response.body.should.have.property('title');
+        response.body.should.have.property('content');
+        done();
+      })
+    })
+  })
   
   describe('put /article/:id', function () {
   
     it('should update articles', function (done){
       chai.request('http://localhost:3000')
-      .put('/article' + articleId)
+      .put('/article/' + articleId)
       .send(dummyArticle)
       .end(function (err, response) {
         response.status.should.equal(200);
@@ -92,7 +108,7 @@ describe('CRUD article', function() {
   
     it('should delete articles', function (done){
       chai.request('http://localhost:3000')
-      .delete('/article' + articleId)
+      .delete('/article/' + articleId)
       .end(function (err, response) {
         response.status.should.equal(200);
         response.body.should.be.an('object');

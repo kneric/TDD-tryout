@@ -41,6 +41,20 @@ const userArticle = (req, res) => {
   })
 }
 
+const articleById = (req, res) => {
+  Article.findById(req.params.id)
+  .then(article => {
+    if (article){
+      res.status(200).json(article)
+    } else {
+      res.status(404).json('article not found')  
+    }
+  })
+  .catch (err => {
+    res.status(400).json(err)
+  })
+}
+
 const updateArticle = (req, res) => {
   Article.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
   .then( article => {
@@ -65,6 +79,7 @@ module.exports = {
   createArticle,
   allArticle,
   userArticle,
+  articleById,
   updateArticle,
   deleteArticle
 };
