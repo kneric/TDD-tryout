@@ -20,6 +20,7 @@ const createArticle = (req, res) => {
 
 const allArticle = (req, res) => {
   Article.find()
+  .sort({updatedAt: 'descending'})
   .populate('author')
   .then(articles => {
     res.status(200).json(articles)
@@ -31,6 +32,7 @@ const allArticle = (req, res) => {
 
 const userArticle = (req, res) => {
   Article.find({author: req.user._id})
+  .sort({updatedAt: 'descending'})
   .populate('author')
   .then(articles => {
     if (articles){
