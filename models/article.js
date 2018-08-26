@@ -18,7 +18,8 @@ const ArticleSchema = new Schema({
   comments: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Comment'
+      ref: 'Comment',
+      default: undefined
     }
   ]
 }, {timestamps:true})

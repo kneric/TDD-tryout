@@ -8,13 +8,14 @@ const {
   updateArticle,
   deleteArticle
 } = require('../controllers/articleC');
+const auth = require('../middlewares/auth');
 
 router
-  .post('/', createArticle)
+  .post('/', auth, createArticle)
   .get('/', allArticle)
-  .get('/user', userArticle)
+  .get('/user', auth, userArticle)
   .get('/:id', articleById)
-  .put('/:id', updateArticle)
-  .delete('/:id', deleteArticle)
+  .put('/:id', auth, updateArticle)
+  .delete('/:id', auth, deleteArticle)
 
 module.exports = router

@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const jwt = require ('jsonwebtoken');
-const axios = require('axios');
 
 const signin = (req, res) => {
   const {email, password} = req.body;
@@ -16,7 +15,8 @@ const signin = (req, res) => {
             email: user.email
           }, process.env.secretKey)
           res.status(200).json({
-            token, 
+            token,
+            name: user.name,
             message:'Signed in succesfully'
           })
         } else {
@@ -24,11 +24,11 @@ const signin = (req, res) => {
         }
       })
     } else {
-      res.status(404).json({message: 'User not found'});
+      res.status(404).json({message: 'User not registered'});
     }
   })
   .catch(err => {
-    res.status(500).json({message: err.message});
+    res.status(500).json(err);
   })
 }
 
@@ -54,11 +54,11 @@ const signup = (req, res) => {
         })
       })
     } else {
-      res.status(400).send('email already used')
+      res.status(400).json({message: 'email already used'})
     }
   })
   .catch(err=> {
-    res.status(400).send(err.message);
+    res.status(400).json(err);
   })
 }
 

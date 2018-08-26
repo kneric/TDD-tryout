@@ -1,14 +1,14 @@
 const Article = require('../models/article');
 
 const createArticle = (req, res) => {
-  const {title, content, thumbnail, author} = req.body;
-  // let author = req.user
+  const {title, content, thumbnail} = req.body;
+  let author = req.user
 
   Article.create({
     title,
     content,
     thumbnail,
-    author
+    author: author._id
   })
   .then(article => {
     res.status(201).json(article)
